@@ -5,14 +5,18 @@
 #include "harness.h"
 #include "queue.h"
 
+
 /*
  * Create empty queue.
  * Return NULL if could not allocate space.
  */
 queue_t *q_new()
-{
+{   
     queue_t *q = malloc(sizeof(queue_t));
     /* TODO: What if malloc returned NULL? */
+    if(q==NULL)
+        return NULL;
+
     q->head = NULL;
     return q;
 }
@@ -20,6 +24,13 @@ queue_t *q_new()
 /* Free all storage used by queue */
 void q_free(queue_t *q)
 {
+    while(q->head!=NULL)
+    {
+        free(q->head->value);
+        free(q->head);
+        q->head=q->head->next;
+
+    }
     /* TODO: How about freeing the list elements and the strings? */
     /* Free queue structure */
     free(q);
